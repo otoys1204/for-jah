@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Cosmic Dance to the Moon</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Comic+Neue:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            perspective: 1000px;
+        }
+        
+        .scene {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        
+        .moon {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #ccc 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.8);
+            top: 15%;
+            right: 15%;
+            z-index: 1;
+            animation: moon-glow 4s ease-in-out infinite alternate;
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+        
+        .falling-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            z-index: 0;
+            animation: falling-star 4s linear forwards;
+            filter: blur(0.5px);
+        }
+        
+        .dancers {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        
+        .dancer {
+            position: absolute;
+            width: 100px;
+            height: 180px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom;
+        }
+        
+        .dancer-1 {
+            background-image: url('cntk.jpeg');
+            left: 50px;
+            animation: dance-1 3s ease-in-out infinite;
+        }
+        
+        .dancer-2 {
+            background-image: url('cntk.jpeg');
+            right: 50px;
+            animation: dance-2 3s ease-in-out infinite 0.5s;
+        }
+        
+        .dialogue {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            color: #5e2b41;
+            padding: 12px 18px;
+            border-radius: 20px;
+            font-family: 'Comic Neue', cursive;
+            font-size: 14px;
+            max-width: 160px;
+            opacity: 0;
+            transform: scale(0);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            z-index: 3;
+            transition: all 0.3s;
+        }
+        
+        .dialogue:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid rgba(255, 255, 255, 0.9);
+            bottom: -10px;
+            left: 20px;
+        }
+        
+        .dancer-1-dialogue {
+            bottom: 180px;
+            left: 80px;
+        }
+        
+        .dancer-2-dialogue {
+            bottom: 180px;
+            right: 80px;
+        }
+        
+        .photos {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 4;
+        }
+        
+        .photo {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            object-fit: cover;
+            bottom: 20%;
+            opacity: 0;
+            z-index: 5;
+            transition: all 0.5s ease-out;
+        }
+        
+        .photo-1 {
+            left: 30%;
+            background-color: #ff9ff3;
+        }
+        
+        .photo-2 {
+            right: 30%;
+            background-color: #feca57;
+        }
+        
+        .photo-dialogue {
+            position: absolute;
+            background: rgba(255, 215, 0, 0.9);
+            color: #5e2b41;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-family: 'Comic Neue', cursive;
+            font-size: 13px;
+            max-width: 140px;
+            opacity: 0;
+            z-index: 6;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            transition: all 0.3s;
+        }
+        
+        .photo-dialogue:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid rgba(255, 215, 0, 0.9);
+        }
+        
+        .photo-1-dialogue {
+            bottom: 150px;
+            left: 25%;
+        }
+        
+        .photo-1-dialogue:after {
+            left: 20px;
+        }
+        
+        .photo-2-dialogue {
+            bottom: 150px;
+            right: 25%;
+        }
+        
+        .photo-2-dialogue:after {
+            right: 20px;
+        }
+        
+        .message {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: white;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            z-index: 7;
+            background: rgba(210, 54, 105, 0.6);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            transition: opacity 1s;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .hearts {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            z-index: 3;
+            animation: float-up 3s linear forwards;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0;
+            z-index: 8;
+        }
+        
+        /* Animations */
+        @keyframes moon-glow {
+            0% { box-shadow: 0 0 60px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 90px rgba(255, 255, 255, 0.9); }
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes falling-star {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(300px, 600px) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes dance-1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-30px) rotate(-5deg); }
+            50% { transform: translateY(0) rotate(5deg); }
+            75% { transform: translateY(-20px) rotate(-3deg); }
+        }
+        
+        @keyframes dance-2 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-40px) rotate(8deg); }
+            50% { transform: translateY(-10px) rotate(-8deg); }
+            75% { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        @keyframes float-to-moon {
+            0% { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-250px) scale(0.7);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-500px) scale(0.3);
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes float-to-moon-final {
+            0% { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) scale(0.3);
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes return-from-moon {
+            0% {
+                transform: translateY(-500px) scale(0.3);
+                opacity: 0;
+            }
+            100% { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fade-in {
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes pop-dialogue {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes float-up {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes sparkle {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        @keyframes fade-out {
+            to { opacity: 0; transform: translateX(-50%) scale(0.5); }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="stars" id="stars"></div>
+        <div class="moon"></div>
+        
+        <div class="dancers">
+            <div class="dancer dancer-1"></div>
+            <div class="dancer dancer-2"></div>
+            
+            <div class="dialogue dancer-1-dialogue" id="d1-dialogue-1">The moonlight is enchanting tonight, isn't it?</div>
+            <div class="dialogue dancer-2-dialogue" id="d2-dialogue-1">It pales in comparison to your radiance, my love ✨</div>
+            <div class="dialogue dancer-1-dialogue" id="d1-dialogue-2">Shall we waltz among the constellations?</div>
+            <div class="dialogue dancer-2-dialogue" id="d2-dialogue-2">Let our love shine brighter than the Milky Way! 💫</div>
+        </div>
+        
+        <div class="photos" id="photos">
+            <img src="cntk.jpeg" alt="You" class="photo photo-1">
+            <img src="cntk.jpeg" alt="Your Sibling" class="photo photo-2">
+            
+            <div class="photo-dialogue photo-1-dialogue" id="p1-dialogue-1">We're soaring through the cosmos! 🌌</div>
+            <div class="photo-dialogue photo-2-dialogue" id="p2-dialogue-1">Our love is the rocket fuel to the stars! 🚀</div>
+            <div class="photo-dialogue photo-1-dialogue" id="p1-dialogue-2">The universe is applauding our dance!</div>
+            <div class="photo-dialogue photo-2-dialogue" id="p2-dialogue-2">Every star is a witness to our eternal bond ✨</div>
+        </div>
+        
+        <div class="message" id="message">
+            Together to the moon and beyond... Our love knows no bounds ❤️
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn">Begin Our Cosmic Journey</button>
+            <button id="resetBtn" style="display: none; margin-top: 10px;">Relive the Magic</button>
+        </div>
+    </div>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = `${Math.random() * 3 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            star.style.opacity = Math.random();
+            starsContainer.appendChild(star);
+        }
+        
+        // Create falling stars occasionally
+        function createFallingStar() {
+            const fallingStar = document.createElement('div');
+            fallingStar.className = 'falling-star';
+            
+            // Random colors for falling stars
+            const colors = ['#ff9ff3', '#feca57', '#48dbfb', '#1dd1a1', '#ff6b6b'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            fallingStar.style.backgroundColor = randomColor;
+            
+            // Random position and size
+            const size = Math.random() * 3 + 2;
+            fallingStar.style.width = `${size}px`;
+            fallingStar.style.height = `${size}px`;
+            fallingStar.style.left = `${Math.random() * 80}%`;
+            fallingStar.style.top = `${-10}%`;
+            
+            // Random animation duration
+            const duration = Math.random() * 3 + 2;
+            fallingStar.style.animationDuration = `${duration}s`;
+            
+            starsContainer.appendChild(fallingStar);
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                fallingStar.remove();
+            }, duration * 1000);
+        }
+        
+        // Start falling star interval
+        let fallingStarInterval = setInterval(createFallingStar, 3000);
+        
+        // Create floating hearts during dance
+        function createHearts() {
+            const dancers = document.querySelector('.dancers');
+            const heart = document.createElement('div');
+            heart.className = 'hearts';
+            heart.innerHTML = '❤️';
+            heart.style.left = `${Math.random() * 300 + 50}px`;
+            heart.style.bottom = `${Math.random() * 100 + 50}px`;
+            heart.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            heart.style.fontSize = `${Math.random() * 15 + 10}px`;
+            dancers.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+        
+        // Create sparkle effects
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+            sparkle.style.animation = `sparkle ${Math.random() * 0.5 + 0.3}s forwards`;
+            sparkle.style.backgroundColor = `hsl(${Math.random() * 60 + 330}, 100%, 80%)`;
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        }
+        
+        // Show dialogue with pop effect
+        function showDialogue(element, delay) {
+            setTimeout(() => {
+                element.style.animation = 'pop-dialogue 0.5s forwards';
+                setTimeout(() => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'scale(0)';
+                }, 3000);
+            }, delay);
+        }
+        
+        // Animation control
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const dancers = document.querySelector('.dancers');
+        const photos = document.getElementById('photos');
+        const message = document.getElementById('message');
+        const photo1 = document.querySelector('.photo-1');
+        const photo2 = document.querySelector('.photo-2');
+        
+        // Dance phase dialogues
+        const danceDialogues = [
+            { id: 'd1-dialogue-1', delay: 1000 },
+            { id: 'd2-dialogue-1', delay: 4000 },
+            { id: 'd1-dialogue-2', delay: 7000 },
+            { id: 'd2-dialogue-2', delay: 10000 }
+        ];
+        
+        // Flight phase dialogues
+        const flightDialogues = [
+            { id: 'p1-dialogue-1', delay: 500 },
+            { id: 'p2-dialogue-1', delay: 2000 },
+            { id: 'p1-dialogue-2', delay: 3500 },
+            { id: 'p2-dialogue-2', delay: 5000 }
+        ];
+        
+        function startAnimation() {
+            // Hide buttons
+            startBtn.style.display = 'none';
+            resetBtn.style.display = 'none';
+            
+            // Reset elements
+            dancers.style.display = 'block';
+            dancers.style.animation = '';
+            dancers.style.opacity = '1';
+            photos.style.display = 'none';
+            message.style.opacity = '0';
+            photo1.style.opacity = '0';
+            photo1.style.animation = '';
+            photo2.style.opacity = '0';
+            photo2.style.animation = '';
+            
+            // Reset dialogues
+            document.querySelectorAll('.dialogue, .photo-dialogue').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'scale(0)';
+                el.style.animation = '';
+            });
+            
+            // Start heart animation during dance
+            const heartInterval = setInterval(createHearts, 800);
+            
+            // Show dance dialogues
+            danceDialogues.forEach(dialogue => {
+                showDialogue(document.getElementById(dialogue.id), dialogue.delay);
+            });
+            
+            // After dancers finish, transition to photos
+            setTimeout(() => {
+                clearInterval(heartInterval);
+                dancers.style.animation = 'fade-out 1s forwards';
+                
+                setTimeout(() => {
+                    dancers.style.display = 'none';
+                    photos.style.display = 'block';
+                    
+                    // Show photos with fade in
+                    photo1.style.animation = 'fade-in 1.5s forwards';
+                    photo2.style.animation = 'fade-in 1.5s forwards 0.5s';
+                    
+                    // Show flight dialogues
+                    flightDialogues.forEach(dialogue => {
+                        showDialogue(document.getElementById(dialogue.id), dialogue.delay);
+                    });
+                    
+                    // After last dialogue, fly to moon with original style
+                    setTimeout(() => {
+                        // Create sparkles along the path
+                        const sparkleInterval = setInterval(() => {
+                            const rect1 = photo1.getBoundingClientRect();
+                            const rect2 = photo2.getBoundingClientRect();
+                            createSparkle(rect1.left + rect1.width/2, rect1.top + rect1.height/2);
+                            createSparkle(rect2.left + rect2.width/2, rect2.top + rect2.height/2);
+                        }, 200);
+                        
+                        photo1.style.animation = 'float-to-moon-final 4s forwards';
+                        photo2.style.animation = 'float-to-moon-final 4s forwards 0.3s';
+                        
+                        // Show message halfway through flight
+                        setTimeout(() => {
+                            message.style.opacity = '1';
+                            
+                            // Clear sparkles when animation completes
+                            setTimeout(() => {
+                                clearInterval(sparkleInterval);
+                                
+                                // Photos stay at moon for 15 seconds
+                                setTimeout(() => {
+                                    // Return photos with sparkles
+                                    const returnSparkleInterval = setInterval(() => {
+                                        const rect1 = photo1.getBoundingClientRect();
+                                        const rect2 = photo2.getBoundingClientRect();
+                                        createSparkle(rect1.left + rect1.width/2, rect1.top + rect1.height/2);
+                                        createSparkle(rect2.left + rect2.width/2, rect2.top + rect2.height/2);
+                                    }, 200);
+                                    
+                                    photo1.style.animation = 'return-from-moon 3s forwards';
+                                    photo2.style.animation = 'return-from-moon 3s forwards 0.3s';
+                                    
+                                    setTimeout(() => {
+                                        clearInterval(returnSparkleInterval);
+                                        resetBtn.style.display = 'block';
+                                    }, 3000);
+                                }, 8000); // Reduced from 15s to 8s for better user experience
+                            }, 4000);
+                        }, 2000);
+                    }, 6000); // Match with last dialogue timing
+                }, 1000);
+            }, 13000); // Match this with your longest dialogue timing
+        }
+        
+        startBtn.addEventListener('click', startAnimation);
+        resetBtn.addEventListener('click', startAnimation);
+    </script>
+</body>
+</html>
